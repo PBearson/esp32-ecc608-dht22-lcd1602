@@ -2,7 +2,7 @@
 
 ### Author: Bryan Pearson
 
-<img src = "setup.jpg" width="250px">
+<center><img src = "setup.jpg" width="500px"></center>
 
 <!-- ![Setup](setup.jpg =250px) -->
 
