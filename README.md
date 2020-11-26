@@ -2,4 +2,8 @@
 
 ### Author: Bryan Pearson
 
-TODO clean up main directory
+Hardware used in this project:
+* NodeMCU ESP-32S
+* LCD1602 module
+* DHT22 
+* ATECC608A SOIC
