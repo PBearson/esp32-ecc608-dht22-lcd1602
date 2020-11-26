@@ -2,7 +2,7 @@
 
 ### Author: Bryan Pearson
 
-![Setup](image.jpg)
+![Setup](setup.jpg)
 
 Hardware used in this project:
 * NodeMCU ESP-32S
