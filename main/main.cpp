@@ -22,8 +22,6 @@ float cToF(float c)
 
 void app_main()
 {
-	int ret;
-
 	ATCAIfaceCfg cfg;
 	cfg.iface_type = ATCA_I2C_IFACE;
 	cfg.devtype = ATECC608A;
@@ -35,6 +33,7 @@ void app_main()
 
 	LiquidCrystal lcd(19, 23, 18, 17, 16, 15);
 	lcd.begin(16, 2);
+	lcd.print("Starting up...");
 
 	atcab_init(&cfg);	
 
@@ -45,11 +44,12 @@ void app_main()
 	printf("\nYour temporary public key:\n");
 	for(int i =  1; i <= 64; i++)
 	{
-		printf("%02X ", temppubkey[i]);
+		printf("%02X ", temppubkey[i - 1]);
 		if(i % 8 == 0) printf("\n");
 	}
 
 	setDHTgpio(22);
+	lcd.clear();
 
 	while(1)
 	{
