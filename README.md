@@ -2,7 +2,9 @@
 
 ### Author: Bryan Pearson
 
-![Setup](setup.jpg =250px)
+<img src = "setup.jpg" width="250">
+
+<!-- ![Setup](setup.jpg =250px) -->
 
 Hardware used in this project:
 * NodeMCU ESP-32S
