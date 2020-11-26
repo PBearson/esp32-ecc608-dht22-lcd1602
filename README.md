@@ -2,6 +2,8 @@
 
 ### Author: Bryan Pearson
 
+![Setup](image.png)
+
 Hardware used in this project:
 * NodeMCU ESP-32S
 * LCD1602 module
