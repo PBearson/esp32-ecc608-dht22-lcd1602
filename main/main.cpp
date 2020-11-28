@@ -34,9 +34,7 @@ void app_main()
 	LiquidCrystal lcd(19, 23, 18, 17, 16, 15);
 	lcd.begin(16, 2);
 	lcd.print("Starting up...");
-
-	atcab_init(&cfg);	
-
+	
 	assert (0 == atcab_init(&cfg));
 
 	uint8_t temppubkey[64];
