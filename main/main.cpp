@@ -31,7 +31,7 @@ void app_main()
 	cfg.wake_delay = 1500;
 	cfg.rx_retries = 20;
 
-	LiquidCrystal lcd(19, 23, 18, 17, 16, 15);
+	LiquidCrystal lcd(19, 23, 18, 17, 16, 0);
 	lcd.begin(16, 2);
 	lcd.print("Starting up...");
 	

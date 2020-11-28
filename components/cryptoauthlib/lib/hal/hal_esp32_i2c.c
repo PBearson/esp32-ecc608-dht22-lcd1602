@@ -21,7 +21,7 @@
 #include "esp_log.h"
 
 #define SDA_PIN                            27
-#define SCL_PIN                            14
+#define SCL_PIN                            33
 #define ACK_CHECK_EN                       0x1              /*!< I2C master will check ack from slave*/
 #define ACK_CHECK_DIS                      0x0              /*!< I2C master will not check ack from slave */
 #define ACK_VAL                            0x0              /*!< I2C ack value */
