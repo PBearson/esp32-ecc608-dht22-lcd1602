@@ -11,3 +11,7 @@ Hardware used in this project:
 * ATECC608A SOIC
 
 Depends on ESP-IDF v4.x (tested in 4.1)
+
+### Schematic:
+
+![Schematic](schematic.jpg)
