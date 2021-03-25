@@ -8,8 +8,11 @@
 #include "cryptoauthlib.h"
 #include "LiquidCrystal.h"
 
+// Change these options to suit your build
 #define LCD_ENABLED 0
 #define DHT22_ENABLED 0
+#define DEFAULT_I2C_ADDRESS 0x5A
+#define SEARCH_I2C_ADDRESS 0
 
 extern "C"
 {
@@ -40,24 +43,33 @@ void app_main()
 	
 	// Scan for the correct I2C address
 	int ret;
-	for(int i = 0; i < 127; i++)
+	if(SEARCH_I2C_ADDRESS)
 	{
-		if(LCD_ENABLED)
+		for(int i = 0; i < 127; i++)
 		{
-			lcd.clear();
-			lcd.setCursor(0, 0);
-			lcd.print("Trying addr.");
-			lcd.setCursor(0, 1);
-			lcd.print(i);
+			if(LCD_ENABLED)
+			{
+				lcd.clear();
+				lcd.setCursor(0, 0);
+				lcd.print("Trying addr.");
+				lcd.setCursor(0, 1);
+				lcd.print(i);
+			}
+			cfg.atcai2c.slave_address = i;
+			ret = atcab_init(&cfg);
+			printf("Checking address %02X\n", i);
+			if(ret == 0)
+			{
+				printf("ECC608 initialized at address %02X\n", i);
+				break;
+			}
 		}
-		cfg.atcai2c.slave_address = i;
+	}
+	else
+	{
+		cfg.atcai2c.slave_address = DEFAULT_I2C_ADDRESS;
 		ret = atcab_init(&cfg);
-		printf("Checking address %02X\n", i);
-		if(ret == 0)
-		{
-			printf("ECC608 initialized at address %02X\n", i);
-			break;
-		}
+		printf("Checking address %02X\n", DEFAULT_I2C_ADDRESS);
 	}
 	assert(ret == 0);
 
@@ -71,7 +83,7 @@ void app_main()
 		if(i % 8 == 0) printf("\n");
 	}
 
-	// Display first 32 bytes of the key on the DHT22
+	// Display first 32 bytes of the key on the LCD
 	if(LCD_ENABLED)
 	{
 		for(int i = 0; i < 16; i++)
