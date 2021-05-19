@@ -6,10 +6,8 @@
 #include "DHT22.h"
 
 #include "cryptoauthlib.h"
-#include "LiquidCrystal.h"
 
 // Change these options to suit your build
-#define LCD_ENABLED 0
 #define DHT22_ENABLED 1
 #define DEFAULT_I2C_ADDRESS 0xC0
 #define SEARCH_I2C_ADDRESS 0
@@ -35,27 +33,12 @@ void app_main()
 	cfg.wake_delay = 1500;
 	cfg.rx_retries = 20;
 
-	LiquidCrystal lcd(19, 23, 18, 17, 16, 0);
-	if(LCD_ENABLED)
-	{
-		lcd.begin(16, 2);
-		lcd.print("Starting up...");
-	}
-	
 	// Scan for the correct I2C address
 	int ret;
 	if(SEARCH_I2C_ADDRESS)
 	{
 		for(int i = 0; i < 256; i++)
 		{
-			if(LCD_ENABLED)
-			{
-				lcd.clear();
-				lcd.setCursor(0, 0);
-				lcd.print("Trying addr.");
-				lcd.setCursor(0, 1);
-				lcd.print(i);
-			}
 			cfg.atcai2c.slave_address = i;
 			ret = atcab_init(&cfg);
 			printf("Checking address %02X\n", i);
@@ -84,24 +67,12 @@ void app_main()
 		if(i % 8 == 0) printf("\n");
 	}
 
-	// Display first 32 bytes of the key on the LCD
-	if(LCD_ENABLED)
-	{
-		for(int i = 0; i < 16; i++)
-		{
-			for(int j = 0; j < 2; j++)
-			{
-				lcd.setCursor(i, j);
-				lcd.print(temppubkey[i * (j + 1)]);
-			}
-		}
-	}
+	// Display first 32 bytes of the key on the display
+	// TODO
 
 	vTaskDelay(2000 / portTICK_RATE_MS);
 
 	if(DHT22_ENABLED) setDHTgpio(DHT22_PIN);
-	
-	if(LCD_ENABLED) lcd.clear();
 
 	while(DHT22_ENABLED)
 	{
@@ -111,15 +82,6 @@ void app_main()
 		float tmp = cToF(getTemperature());
 		printf("\nHumidity:\t%.1f%%\n", hum);
 		printf("Temperature:\t%.1f° F\n", tmp);
-		if(LCD_ENABLED)
-		{
-			lcd.setCursor(0, 0);
-			lcd.print("Temp: ");
-			lcd.print(tmp);
-			lcd.setCursor(0, 1);
-			lcd.print("Hum: ");
-			lcd.print(hum);
-		}
 		vTaskDelay(1000 / portTICK_RATE_MS);
 	}
 }
