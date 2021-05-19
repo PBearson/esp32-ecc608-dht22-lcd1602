@@ -10,8 +10,8 @@
 
 // Change these options to suit your build
 #define LCD_ENABLED 0
-#define DHT22_ENABLED 0
-#define DEFAULT_I2C_ADDRESS 0x5A
+#define DHT22_ENABLED 1
+#define DEFAULT_I2C_ADDRESS 0xC0
 #define SEARCH_I2C_ADDRESS 0
 
 extern "C"
@@ -45,7 +45,7 @@ void app_main()
 	int ret;
 	if(SEARCH_I2C_ADDRESS)
 	{
-		for(int i = 0; i < 127; i++)
+		for(int i = 0; i < 256; i++)
 		{
 			if(LCD_ENABLED)
 			{
