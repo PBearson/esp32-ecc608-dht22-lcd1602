@@ -13,6 +13,7 @@
 #define DHT22_ENABLED 1
 #define DEFAULT_I2C_ADDRESS 0xC0
 #define SEARCH_I2C_ADDRESS 0
+#define DHT22_PIN 22
 
 extern "C"
 {
@@ -98,26 +99,27 @@ void app_main()
 
 	vTaskDelay(2000 / portTICK_RATE_MS);
 
-	if(DHT22_ENABLED) setDHTgpio(22);
+	if(DHT22_ENABLED) setDHTgpio(DHT22_PIN);
 	
 	if(LCD_ENABLED) lcd.clear();
 
-	if(!(DHT22_ENABLED && LCD_ENABLED)) return;
-
-	while(LCD_ENABLED && DHT22_ENABLED)
+	while(DHT22_ENABLED)
 	{
 		int ret = readDHT();
 		errorHandler(ret);
 		float hum = getHumidity();
 		float tmp = cToF(getTemperature());
-		printf("\nHumidity:\t%.1f\n", hum);
-		printf("Temperature:\t%.1f\n", tmp);
-		lcd.setCursor(0, 0);
-		lcd.print("Temp: ");
-		lcd.print(tmp);
-		lcd.setCursor(0, 1);
-		lcd.print("Hum: ");
-		lcd.print(hum);
+		printf("\nHumidity:\t%.1f%%\n", hum);
+		printf("Temperature:\t%.1f° F\n", tmp);
+		if(LCD_ENABLED)
+		{
+			lcd.setCursor(0, 0);
+			lcd.print("Temp: ");
+			lcd.print(tmp);
+			lcd.setCursor(0, 1);
+			lcd.print("Hum: ");
+			lcd.print(hum);
+		}
 		vTaskDelay(1000 / portTICK_RATE_MS);
 	}
 }
