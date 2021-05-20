@@ -6,6 +6,6 @@ This project connects DHT22, ATECC608A, and an ST7735 LCD to a a custom-designed
 
 ### Hardware Setup
 
-The hardware setup is minimal, since our board incorporates the necesssary modules and sensors. See below:
+The hardware setup is minimal, since our board incorporates the necessary modules and sensors. See below:
 
 ![Setup](setup.jpg)
