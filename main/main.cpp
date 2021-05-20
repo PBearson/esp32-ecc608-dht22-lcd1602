@@ -108,8 +108,10 @@ void app_main()
 
 	xpos = 50;
 	ypos = 5;
-	strcpy((char *)ascii, "Hello from NSF");
+	strcpy((char *)ascii, "Hello from");
 	lcdDrawString(&dev, fx16G, xpos, ypos, ascii, color);
+	strcpy((char *)ascii, "Bryan Pearson");
+	lcdDrawString(&dev, fx16G, xpos - 15, ypos, ascii, color);
 
 	vTaskDelay(1000 / portTICK_RATE_MS);
 
