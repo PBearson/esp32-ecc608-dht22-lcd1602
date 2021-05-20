@@ -96,8 +96,8 @@ void app_main()
 
 	lcdInversionOn(&dev);
 
-	uint16_t xpos = 0;
-	uint16_t ypos = 0;
+	uint16_t xpos;
+	uint16_t ypos;
 
 	// Multi Font Test
 	uint16_t color;
@@ -110,6 +110,8 @@ void app_main()
 	ypos = 5;
 	strcpy((char *)ascii, "Hello from NSF");
 	lcdDrawString(&dev, fx16G, xpos, ypos, ascii, color);
+
+	vTaskDelay(1000 / portTICK_RATE_MS);
 
 	ATCAIfaceCfg cfg;
 	cfg.iface_type = ATCA_I2C_IFACE;
@@ -128,6 +130,11 @@ void app_main()
 			cfg.atcai2c.slave_address = i;
 			ret = atcab_init(&cfg);
 			printf("Checking address %02X\n", i);
+
+			lcdFillScreen(&dev, WHITE);
+			sprintf((char *)ascii, "Checking address %02X", i);
+			lcdDrawString(&dev, fx16G, xpos, ypos, ascii, color);
+			
 			if(ret == 0)
 			{
 				printf("ECC608 initialized at address %02X\n", i);
@@ -154,11 +161,27 @@ void app_main()
 	}
 
 	// Display first 32 bytes of the key on the display
-	// TODO
+	lcdFillScreen(&dev, WHITE);
+	strcpy((char *)ascii, "Part of your key:");
+	lcdDrawString(&dev, fx16G, xpos, ypos, ascii, color);
+	xpos -= 15;
+	
+	for(int i = 0; i < 3; i++)
+	{
+		for(int j = 0; j < 8; j++)
+		{
+			uint8_t c[3];
+			sprintf((char*)c, "%02X", temppubkey[i * 8 + j]);
+			lcdDrawString(&dev, fx16G, xpos - (15 * i), ypos + (18 * j), c, color);
+		}
+	}
 
 	vTaskDelay(2000 / portTICK_RATE_MS);
 
 	if(DHT22_ENABLED) setDHTgpio(DHT22_PIN);
+
+	xpos = 40;
+	ypos = 5;
 
 	while(DHT22_ENABLED)
 	{
@@ -168,6 +191,13 @@ void app_main()
 		float tmp = cToF(getTemperature());
 		printf("\nHumidity:\t%.1f%%\n", hum);
 		printf("Temperature:\t%.1f° F\n", tmp);
+
+		lcdFillScreen(&dev, WHITE);
+		sprintf((char *)ascii, "Humidity: %.1f%%", hum);
+		lcdDrawString(&dev, fx16G, xpos, ypos, ascii, color);
+		sprintf((char *)ascii, "Temperature: %.1f", tmp);
+		lcdDrawString(&dev, fx16G, xpos - 20, ypos, ascii, color);
+
 		vTaskDelay(1000 / portTICK_RATE_MS);
 	}
 }
